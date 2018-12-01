@@ -1,3 +1,5 @@
+CREATE DATABASE TRAVIANS
+
 USE TRAVIANS
 
 CREATE TABLE Clan (
@@ -6,6 +8,8 @@ CREATE TABLE Clan (
     amount_of_wood INT DEFAULT 0,
     amount_of_food INT DEFAULT 0,
     solders_num INT DEFAULT 0,
+    experiment INT DEFAULT 0,
+    clan_level INT DEFAULT 0,
     CONSTRAINT not_negetive CHECK (
         amount_of_gold >= 0 AND
         amount_of_wood >= 0 AND
