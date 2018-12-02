@@ -1,5 +1,3 @@
-CREATE DATABASE TRAVIANS
-
 USE TRAVIANS
 
 CREATE TABLE Clan (
@@ -8,8 +6,6 @@ CREATE TABLE Clan (
     amount_of_wood INT DEFAULT 0,
     amount_of_food INT DEFAULT 0,
     solders_num INT DEFAULT 0,
-    experiment INT DEFAULT 0,
-    clan_level INT DEFAULT 0,
     CONSTRAINT not_negetive CHECK (
         amount_of_gold >= 0 AND
         amount_of_wood >= 0 AND
@@ -32,19 +28,24 @@ CREATE TABLE UserData (
     username VARCHAR(255) NOT NULL PRIMARY KEY,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    user_duty INT FOREIGN KEY REFERENCES Duty(duty_id),
+    user_current_duty INT FOREIGN KEY REFERENCES UserDutyHistory(duty_history_id),
     CONSTRAINT email_format CHECK (
         email LIKE '%_@__%.__%'
     )
+);
+
+CREATE TABLE UserDutyHistory (
+    duty_history_id INT IDENTITY(1,1) PRIMARY KEY,
+    username VARCHAR(255) FOREIGN KEY REFERENCES UserData(username),
+    duty_id INT FOREIGN KEY REFERENCES DUTY(duty_id)
+    passed_cycle INT DEFAULT 0,
+    CONSTRAINT be_unique UNIQUE (username, duty_id)
 );
 
 CREATE TABLE Building (
     building_id INT NOT NULL PRIMARY KEY,
     building_name VARCHAR(65) NOT NULL
 );
-
-
-
 
 CREATE TABLE BuildingsOfClans (
     clan_name VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
