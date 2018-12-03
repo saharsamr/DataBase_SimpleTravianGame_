@@ -29,6 +29,14 @@ BEGIN
     SELECT @duty_id = duty_id FROM Duty
         WHERE Duty.duty_name = @duty_name;
 
+		IF NOT EXISTS (SELECT * FROM UserDutyHistory
+										WHERE UserDutyHistory.duty_id = @duty_id
+		  							AND UserDutyHistory.username = @username
+		BEGIN
+			INSERT INTO UserDutyHistory (username, duty_id)
+				VALUES (@username, @duty_id)
+		END
+
     SELECT @duty_history_id = duty_history_id FROM UserDutyHistory
         WHERE UserDutyHistory.duty_id = @duty_id AND
             UserDutyHistory.username = @username
