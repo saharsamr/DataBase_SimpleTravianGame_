@@ -33,11 +33,7 @@ BEGIN
 		INSERT INTO dbo.UserDutyHistory (username, duty_id)
 				VALUES (@username, @duty_id);
 
-		SELECT @duty_history_id = duty_history_id FROM UserDutyHistory
-				WHERE UserDutyHistory.duty_id = @duty_id
-				AND UserDutyHistory.username = @username;
-
     INSERT INTO dbo.UserData (username, password_hash, email, user_current_duty)
-        VALUES (@username, @password_hash, @email, @duty_history_id);
+        VALUES (@username, @password_hash, @email, @duty_id);
 END
 GO

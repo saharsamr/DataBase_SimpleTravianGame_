@@ -42,7 +42,7 @@ BEGIN
             UserDutyHistory.username = @username
 
     UPDATE UserData -- TODO: esme table lazeme?
-		SET duty_history_id = @duty_history_id
+		SET user_current_duty = @duty_id
 		WHERE UserData.username = @username;
 END
 GO

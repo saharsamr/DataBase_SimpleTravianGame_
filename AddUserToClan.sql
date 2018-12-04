@@ -45,7 +45,8 @@ BEGIN
         WHERE RolesOfClans.clan_name = @clan_name
         AND RolesOfClans.role_id = @role_id;
 
-    INSERT INTO dbo.Membership (user_id, roles_clans_id)
-        VALUES (@username, @roles_clans_id);
+    UPDATE UserData
+        SET roles_of_clan_id = @roles_clans_id
+        WHERE UserData.username = @username;
 END
 GO

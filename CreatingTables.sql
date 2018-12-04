@@ -19,6 +19,13 @@ CREATE TABLE Role (
     role_name VARCHAR(65) NOT NULL
 );
 
+CREATE TABLE RolesOfClans (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    clan_name VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
+    role_id INT FOREIGN KEY REFERENCES Role(role_id),
+    CONSTRAINT unique_role_in_clan UNIQUE (clan_name, role_id)
+);
+
 CREATE TABLE Duty (
     duty_id INT NOT NULL PRIMARY KEY,
     duty_name VARCHAR(65) NOT NULL
@@ -29,6 +36,7 @@ CREATE TABLE UserData (
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     user_current_duty INT FOREIGN KEY REFERENCES Duty(duty_id),
+    roles_of_clan_id INT FOREIGN KEY REFERENCES RolesOfClans(id),
     CONSTRAINT email_format CHECK (
         email LIKE '%_@__%.__%'
     )
@@ -57,13 +65,6 @@ CREATE TABLE BuildingsOfClans (
     )
 );
 
-CREATE TABLE RolesOfClans (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    clan_name VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
-    role_id INT FOREIGN KEY REFERENCES Role(role_id),
-    CONSTRAINT unique_role_in_clan UNIQUE (clan_name, role_id)
-);
-
 CREATE TABLE DoWar (
     starter VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
     threatened VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
@@ -77,11 +78,6 @@ CREATE TABLE DoWar (
         loser_fatality_percentage >= 20 AND
         loser_fatality_percentage <= 30
     )
-);
-
-CREATE TABLE Membership (
-    user_id VARCHAR(255) FOREIGN KEY REFERENCES UserData(username),
-    roles_clans_id INT FOREIGN KEY REFERENCES RolesOfClans(id)
 );
 
 GO
