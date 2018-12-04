@@ -23,7 +23,7 @@ CREATE PROCEDURE dbo.SetUserDuty
     @duty_name VARCHAR(255)
 AS
 BEGIN
-    DECLAR @duty_id INT,
+    DECLARE @duty_id INT,
             @duty_history_id INT;
 
     SELECT @duty_id = duty_id FROM Duty
@@ -31,7 +31,7 @@ BEGIN
 
 		IF NOT EXISTS (SELECT * FROM UserDutyHistory
 										WHERE UserDutyHistory.duty_id = @duty_id
-		  							AND UserDutyHistory.username = @username
+		  							AND UserDutyHistory.username = @username)
 		BEGIN
 			INSERT INTO UserDutyHistory (username, duty_id)
 				VALUES (@username, @duty_id)

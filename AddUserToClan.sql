@@ -28,14 +28,14 @@ CREATE PROCEDURE dbo.AddUserToClan
   @clan_name VARCHAR(255)
 AS
 BEGIN
-    DECLAR @role_id INT,
+    DECLARE @role_id INT,
             @roles_clans_id INT;
     SELECT @role_id = role_id FROM Role
         WHERE Role.role_name = @role_name;
 
     IF NOT EXISTS (SELECT * FROM RolesOfClans
                     WHERE RolesOfClans.clan_name = @clan_name
-                    AND RolesOfClans.role_id = @role_id;
+                    AND RolesOfClans.role_id = @role_id)
     BEGIN
       INSERT INTO dbo.RolesOfClans (clan_name, role_id)
         VALUES (@clan_name, @role_id);

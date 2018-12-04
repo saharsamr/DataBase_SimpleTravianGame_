@@ -28,7 +28,7 @@ CREATE TABLE UserData (
     username VARCHAR(255) NOT NULL PRIMARY KEY,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    user_current_duty INT FOREIGN KEY REFERENCES UserDutyHistory(duty_history_id),
+    user_current_duty INT FOREIGN KEY REFERENCES Duty(duty_id),
     CONSTRAINT email_format CHECK (
         email LIKE '%_@__%.__%'
     )
@@ -37,7 +37,7 @@ CREATE TABLE UserData (
 CREATE TABLE UserDutyHistory (
     duty_history_id INT IDENTITY(1,1) PRIMARY KEY,
     username VARCHAR(255) FOREIGN KEY REFERENCES UserData(username),
-    duty_id INT FOREIGN KEY REFERENCES DUTY(duty_id)
+    duty_id INT FOREIGN KEY REFERENCES DUTY(duty_id),
     passed_cycle INT DEFAULT 0,
     CONSTRAINT be_unique UNIQUE (username, duty_id)
 );
@@ -61,7 +61,7 @@ CREATE TABLE RolesOfClans (
     id INT IDENTITY(1,1) PRIMARY KEY,
     clan_name VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
     role_id INT FOREIGN KEY REFERENCES Role(role_id),
-    CONSTRAINT be_unique UNIQUE (clan_name, role_id)
+    CONSTRAINT unique_role_in_clan UNIQUE (clan_name, role_id)
 );
 
 CREATE TABLE DoWar (

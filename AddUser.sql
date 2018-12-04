@@ -25,7 +25,7 @@ CREATE PROCEDURE dbo.AddUser
   @duty_name VARCHAR(255)
 AS
 BEGIN
-    DECLAR @duty_id INT,
+    DECLARE @duty_id INT,
 						@duty_history_id INT;
     SELECT @duty_id = duty_id FROM Duty
         WHERE Duty.duty_name = @duty_name;
