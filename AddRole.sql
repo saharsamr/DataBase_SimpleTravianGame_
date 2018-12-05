@@ -19,7 +19,7 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 CREATE PROCEDURE dbo.AddRole
-	@role_name VARCHAR(255),
+	@role_name VARCHAR(65),
 	@uniqueness INT
 AS
 BEGIN

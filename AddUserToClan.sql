@@ -22,7 +22,7 @@ GO
 
 CREATE PROCEDURE dbo.AddUserToClan
 	@username VARCHAR(255),
-  @role_name VARCHAR(255),
+  @role_name VARCHAR(65),
   @clan_name VARCHAR(255)
 AS
 BEGIN

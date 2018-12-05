@@ -19,8 +19,8 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 CREATE PROCEDURE dbo.SetUserDuty
-	@username VARCHAR(255),
-    @duty_name VARCHAR(255)
+		@username VARCHAR(255),
+    @duty_name VARCHAR(65)
 AS
 BEGIN
     DECLARE @duty_id INT,

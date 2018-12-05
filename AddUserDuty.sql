@@ -19,7 +19,7 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 CREATE PROCEDURE dbo.AddUserDuty
-	@duty_name VARCHAR(255)
+	@duty_name VARCHAR(65)
 AS
 BEGIN
 	INSERT INTO Duty (duty_name)

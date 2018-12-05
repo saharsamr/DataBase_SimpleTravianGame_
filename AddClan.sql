@@ -19,10 +19,11 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 CREATE PROCEDURE dbo.AddClan
-	@clan_name VARCHAR(255)
+	@clan_name VARCHAR(255),
+	@slogan VARCHAR(255)
 AS
 BEGIN
-	INSERT INTO Caln (clan_name)
-        VALUES (@clan_name);
+	INSERT INTO Caln (clan_name, slogan)
+        VALUES (@clan_name, @slogan);
 END
 GO

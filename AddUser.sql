@@ -22,7 +22,7 @@ CREATE PROCEDURE dbo.AddUser
 	@username VARCHAR(255),
 	@password_hash VARCHAR(255),
   @email VARCHAR(255),
-  @duty_name VARCHAR(255)
+  @duty_name VARCHAR(65)
 AS
 BEGIN
     DECLARE @duty_id INT,

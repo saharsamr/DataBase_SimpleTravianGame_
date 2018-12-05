@@ -2,6 +2,7 @@ USE TRAVIANS
 
 CREATE TABLE Clan (
     clan_name VARCHAR(255) NOT NULL PRIMARY KEY,
+    slogan VARCHAR(255),
     amount_of_gold INT DEFAULT 0,
     amount_of_wood INT DEFAULT 0,
     amount_of_food INT DEFAULT 0,
@@ -15,7 +16,7 @@ CREATE TABLE Clan (
 );
 
 CREATE TABLE Role (
-    role_id INT NOT NULL PRIMARY KEY,
+    role_id INT IDENTITY(1,1) PRIMARY KEY,
     role_name VARCHAR(65) NOT NULL,
     uniqueness INT NOT NULL --true or false!
 );
@@ -28,7 +29,7 @@ CREATE TABLE RolesOfClans (
 );
 
 CREATE TABLE Duty (
-    duty_id INT NOT NULL PRIMARY KEY,
+    duty_id INT IDENTITY(1,1) PRIMARY KEY,
     duty_name VARCHAR(65) NOT NULL
 );
 
@@ -52,7 +53,7 @@ CREATE TABLE UserDutyHistory (
 );
 
 CREATE TABLE Building (
-    building_id INT NOT NULL PRIMARY KEY,
+    building_id INT IDENTITY(1,1) PRIMARY KEY,
     building_name VARCHAR(65) NOT NULL
 );
 
