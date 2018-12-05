@@ -19,10 +19,11 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 CREATE PROCEDURE dbo.AddRole
-	@role_name VARCHAR(255)
+	@role_name VARCHAR(255),
+	@uniqueness INT
 AS
 BEGIN
-	INSERT INTO Role (role_name)
-        VALUES (@role_name);
+	INSERT INTO Role (role_name, uniqueness)
+        VALUES (@role_name, @uniqueness);
 END
 GO

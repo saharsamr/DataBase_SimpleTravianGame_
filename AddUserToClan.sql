@@ -19,8 +19,6 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 --TODO: check konim ke admin masalan az yeki bishtar nashe o ina
---TODO: avaz kardane role ham bayad bashe??
---TODO: membership table esh aslan lazeme? ye filed toye user hal nemikone?
 
 CREATE PROCEDURE dbo.AddUserToClan
 	@username VARCHAR(255),
@@ -29,8 +27,10 @@ CREATE PROCEDURE dbo.AddUserToClan
 AS
 BEGIN
     DECLARE @role_id INT,
-            @roles_clans_id INT;
-    SELECT @role_id = role_id FROM Role
+            @roles_clans_id INT,
+            @uniqueness_role INT;
+
+    SELECT @role_id = role_id , @uniqueness_role = uniqueness FROM Role
         WHERE Role.role_name = @role_name;
 
     IF NOT EXISTS (SELECT * FROM RolesOfClans
@@ -45,8 +45,9 @@ BEGIN
         WHERE RolesOfClans.clan_name = @clan_name
         AND RolesOfClans.role_id = @role_id;
 
-    UPDATE UserData
-        SET roles_of_clan_id = @roles_clans_id
-        WHERE UserData.username = @username;
+    IF @uniqueness_role = 1
+        UPDATE UserData
+            SET roles_of_clan_id = @roles_clans_id
+            WHERE UserData.username = @username;
 END
 GO

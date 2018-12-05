@@ -16,7 +16,8 @@ CREATE TABLE Clan (
 
 CREATE TABLE Role (
     role_id INT NOT NULL PRIMARY KEY,
-    role_name VARCHAR(65) NOT NULL
+    role_name VARCHAR(65) NOT NULL,
+    uniqueness INT NOT NULL --true or false!
 );
 
 CREATE TABLE RolesOfClans (
