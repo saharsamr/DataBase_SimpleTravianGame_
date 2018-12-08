@@ -39,7 +39,7 @@ BEGIN
         WHERE Clan.clan_name = @clan_name;
 
     --  :)))))
-    @sensitive_duty_number = (SELECT COUNT(*) FROM UserData AS u
+    SET @sensitive_duty_number = (SELECT COUNT(*) FROM UserData AS u
                                 INNER JOIN Duty AS d
                                   ON u.user_current_duty = d.duty_id
                                 INNER JOIN RolesOfClans AS r
@@ -57,7 +57,6 @@ BEGIN
       SET @amount_of_progress = @sensitive_duty_number * 25;
     ELSE
       SET @amount_of_progress = @min_of_gold_and_wood / 25;
-    END
 
     UPDATE Clan
       SET amount_of_gold = @amount_of_gold - (@amount_of_progress * 25),
@@ -75,24 +74,25 @@ BEGIN
 
     SELECT @percentage_of_progress = percentage_of_progress FROM BuildingsOfClans
       WHERE BuildingsOfClans.clan_name = @clan_name
-        AND BuildingsOfClans.percentage_of_progress < 100))
+        AND BuildingsOfClans.percentage_of_progress < 100
 
     IF ((100 - @percentage_of_progress) >= @amount_of_progress)
       BEGIN
         UPDATE BuildingsOfClans
           SET percentage_of_progress = @percentage_of_progress + @amount_of_progress
           WHERE BuildingsOfClans.clan_name = @clan_name
-            AND BuildingsOfClans.percentage_of_progress < 100));
+            AND BuildingsOfClans.percentage_of_progress < 100;
       END
     ELSE
       BEGIN
         UPDATE BuildingsOfClans
           SET percentage_of_progress = 100
           WHERE BuildingsOfClans.clan_name = @clan_name
-            AND BuildingsOfClans.percentage_of_progress < 100));
+            AND BuildingsOfClans.percentage_of_progress < 100;
 
           INSERT INTO BuildingsOfClans(clan_name, building_id, percentage_of_progress)
-            VALUES(@clan_name, @building_id, @amount_of_progress - 100 + @percentage_of_progress);
+            VALUES(@clan_name, @building_id, (@amount_of_progress - 100 + @percentage_of_progress));
       END
+	  RETURN
 END
 GO

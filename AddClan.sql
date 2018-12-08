@@ -27,9 +27,9 @@ BEGIN
 	DECLARE @building_id INT;
 
 	SELECT @building_id = building_id FROM Building
-			WHERE Building.building_name = @building_name;
+			WHERE Building.building_name = @default_building;
 
-	INSERT INTO Caln (clan_name, slogan, default_building)
-        VALUES (@clan_name, @slogan, @building_name);
+	INSERT INTO Caln (clan_name, slogan, default_type_building)
+        VALUES (@clan_name, @slogan, @building_id);
 END
 GO

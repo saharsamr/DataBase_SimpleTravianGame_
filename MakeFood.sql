@@ -9,6 +9,8 @@
 -- This block of comments will not be included in
 -- the definition of the procedure.
 -- ================================================
+USE TRAVIANS
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -30,7 +32,7 @@ BEGIN
     SELECT @amount_of_food = amount_of_food FROM Clan
         WHERE Clan.clan_name = @clan_name;
 
-    @farm_number = (SELECT COUNT(*) FROM BuildingsOfClans AS bc
+    SET @farm_number = (SELECT COUNT(*) FROM BuildingsOfClans AS bc
                       INNER JOIN Building AS b
                         ON bc.building_id = b.building_id
                       WHERE bc.clan_name = @clan_name

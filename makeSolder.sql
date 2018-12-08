@@ -19,7 +19,7 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 
-CREATE PROCEDURE dbo.MakeWood
+CREATE PROCEDURE dbo.MakeSolder
 	@clan_name VARCHAR(255)
 AS
 BEGIN

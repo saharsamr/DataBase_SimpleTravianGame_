@@ -28,7 +28,7 @@ AS
 BEGIN
 	DECLARE @result INT;
 
-	@result = (SELECT SUM(dbo.GetDutyLevel(h.username, h.duty_id))
+	SET @result = (SELECT SUM(dbo.GetDutyLevel(h.username, h.duty_id))
                 FROM UserDutyHistory AS h
                 INNER JOIN UserData AS u
                   ON h.username = u.username
@@ -37,7 +37,7 @@ BEGIN
                 INNER JOIN RolesOfClans AS r
                   ON u.roles_of_clan_id = r.id
                 WHERE d.duty_name = @sensitive_duty_name
-                  AND r.clan_name = @clan_name)
+                  AND r.clan_name = @clan_name);
 
 	RETURN @result;
 END
