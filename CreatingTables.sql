@@ -56,7 +56,7 @@ CREATE TABLE UserDutyHistory (
     duty_history_id INT IDENTITY(1,1) PRIMARY KEY,
     username VARCHAR(255) FOREIGN KEY REFERENCES UserData(username),
     duty_id INT FOREIGN KEY REFERENCES DUTY(duty_id),
-    passed_cycle INT DEFAULT 0,
+    passed_cycle INT DEFAULT 0, --TODO: in bayad ziad she ye ja :-???
     CONSTRAINT be_unique UNIQUE (username, duty_id)
 );
 
