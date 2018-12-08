@@ -18,13 +18,13 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE dbo.SetSloganOfClan
+CREATE PROCEDURE dbo.SetDefaultTypeBuilding
 		@clan_name VARCHAR(255),
-    @slogan VARCHAR(255)
+    @default_type_building INT
 AS
 BEGIN
     UPDATE Clan
-		    SET slogan = @slogan
+		    SET default_type_building = @default_type_building
 		    WHERE Clan.clan_name = @clan_name;
 END
 GO
