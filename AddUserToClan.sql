@@ -18,7 +18,6 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
---TODO: check konim ke admin masalan az yeki bishtar nashe o ina
 
 CREATE PROCEDURE dbo.AddUserToClan
 	@username VARCHAR(255),

@@ -18,7 +18,6 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
---TODO: check konim ke admin masalan az yeki bishtar nashe o ina
 
 CREATE PROCEDURE dbo.ProgressBuilding
 	@clan_name VARCHAR(255),
@@ -66,7 +65,8 @@ BEGIN
 
     IF NOT EXISTS(SELECT * FROM BuildingsOfClans
                     WHERE BuildingsOfClans.clan_name = @clan_name
-                      AND BuildingsOfClans.percentage_of_progress < 100)
+                      AND BuildingsOfClans.percentage_of_progress < 100
+                      AND BuildingsOfClans.building_id = @building_id)
     BEGIN
       INSERT INTO BuildingsOfClans(clan_name, building_id)
         VALUES(@clan_name, @building_id);
@@ -75,20 +75,23 @@ BEGIN
     SELECT @percentage_of_progress = percentage_of_progress FROM BuildingsOfClans
       WHERE BuildingsOfClans.clan_name = @clan_name
         AND BuildingsOfClans.percentage_of_progress < 100
+        AND BuildingsOfClans.building_id = @building_id
 
     IF ((100 - @percentage_of_progress) >= @amount_of_progress)
       BEGIN
         UPDATE BuildingsOfClans
           SET percentage_of_progress = @percentage_of_progress + @amount_of_progress
           WHERE BuildingsOfClans.clan_name = @clan_name
-            AND BuildingsOfClans.percentage_of_progress < 100;
+            AND BuildingsOfClans.percentage_of_progress < 100
+            AND BuildingsOfClans.building_id = @building_id;
       END
     ELSE
       BEGIN
         UPDATE BuildingsOfClans
           SET percentage_of_progress = 100
           WHERE BuildingsOfClans.clan_name = @clan_name
-            AND BuildingsOfClans.percentage_of_progress < 100;
+            AND BuildingsOfClans.percentage_of_progress < 100
+            AND BuildingsOfClans.building_id = @building_id;
 
           INSERT INTO BuildingsOfClans(clan_name, building_id, percentage_of_progress)
             VALUES(@clan_name, @building_id, (@amount_of_progress - 100 + @percentage_of_progress));
