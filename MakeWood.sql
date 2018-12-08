@@ -19,20 +19,25 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 
-CREATE PROCEDURE dbo.MakeGold
+CREATE PROCEDURE dbo.MakeWood
 	@clan_name VARCHAR(255)
 AS
 BEGIN
-    DECLARE @miner_duty_power INT, --Miner
+    DECLARE @sawyer_duty_power INT,
+            @amount_of_wood INT,
             @amount_of_gold INT;
 
-    SELECT @amount_of_gold = amount_of_gold FROM Clan
+    SELECT @amount_of_wood = amount_of_wood,
+           @amount_of_gold = amount_of_gold FROM Clan
         WHERE Clan.clan_name = @clan_name;
 
-    SELECT @miner_duty_power = dbo.GetSensitiveDutyPower(@clan_name, 'Miner');
+    SELECT @sawyer_duty_power = dbo.GetSensitiveDutyPower(@clan_name, 'Sawyer');
 
-    UPDATE Clan
-      SET amount_of_gold = @amount_of_gold + (@miner_duty_power * 20)
-      WHERE Clan.clan_name = @clan_name;
+    IF (@amount_of_gold > (@sawyer_duty_power * 10))
+    BEGIN
+      UPDATE Clan
+        SET amount_of_wood = @amount_of_wood + (@sawyer_duty_power * 10)
+        WHERE Clan.clan_name = @clan_name;
+    END
 END
 GO

@@ -19,20 +19,28 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 
-CREATE PROCEDURE dbo.MakeGold
+CREATE PROCEDURE dbo.MAkeFood
 	@clan_name VARCHAR(255)
 AS
 BEGIN
-    DECLARE @miner_duty_power INT, --Miner
-            @amount_of_gold INT;
+    DECLARE @Farmer_duty_power INT,
+            @amount_of_food INT,
+            @farm_number INT;
 
-    SELECT @amount_of_gold = amount_of_gold FROM Clan
+    SELECT @amount_of_food = amount_of_food FROM Clan
         WHERE Clan.clan_name = @clan_name;
 
-    SELECT @miner_duty_power = dbo.GetSensitiveDutyPower(@clan_name, 'Miner');
+    @farm_number = (SELECT COUNT(*) FROM BuildingsOfClans AS bc
+                      INNER JOIN Building AS b
+                        ON bc.building_id = b.building_id
+                      WHERE bc.clan_name = @clan_name
+                        AND b.building_name = 'Farm'
+                        AND bc.percentage_of_progress = 100);
+
+    SELECT @Farmer_duty_power = dbo.GetSensitiveDutyPower(@clan_name, 'Farmer');
 
     UPDATE Clan
-      SET amount_of_gold = @amount_of_gold + (@miner_duty_power * 20)
+      SET amount_of_food = @amount_of_food + (@Farmer_duty_power * @farm_number)
       WHERE Clan.clan_name = @clan_name;
 END
 GO
