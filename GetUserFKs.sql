@@ -3,19 +3,19 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE FUNCTION GetPropertyAmount
+CREATE FUNCTION dbo.GetUserFKs
 (
-	@clan_name VARCHAR(255),
+	@username VARCHAR(255),
 	@property_name VARCHAR(255)
 )
 RETURNS INT
 AS
 BEGIN
 	DECLARE @result INT;
-	
-	SELECT @result = @property_name FROM Clan
-		WHERE Clan.clan_name = @clan_name;
-	
+
+	SELECT @result = @property_name FROM UserData
+		WHERE UserData.username = @username;
+
 	RETURN @result
 END
 GO

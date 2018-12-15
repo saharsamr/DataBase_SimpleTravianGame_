@@ -1,53 +1,57 @@
--- ================================================
--- Template generated from Template Explorer using:
--- Create Procedure (New Menu).SQL
---
--- Use the Specify Values for Template Parameters
--- command (Ctrl-Shift-M) to fill in the parameter
--- values below.
---
--- This block of comments will not be included in
--- the definition of the procedure.
--- ================================================
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
+
 CREATE PROCEDURE dbo.DoWarEffect
 	@winner_id VARCHAR(255),
 	@loser_id VARCHAR(255)
 AS
 BEGIN
 	DECLARE @gold INT,
-			@food INT,
-			@sol_rand_winner INT,
-			@sol_rand_loser INT;
+					@food INT,
+					@sol_rand_winner INT,
+					@sol_rand_loser INT,
+					@winner_gold_change INT,
+					@loser_gold_change INT,
+					@winner_food_change INT,
+					@loser_food_change INT,
+					@loser_experience INT,
+					@winner_experience INT;
 
 	SELECT @gold = dbo.GetPropertyAmount(@loser_id, 'amount_of_gold');
 	SELECT @food = dbo.GetPropertyAmount(@loser_id, 'amount_of_food');
+	SET @gold = 0.1*@gold;
+	SET @food = 0.1*@food;
 
-	UPDATE Clan
-		SET amount_of_gold = (0.9*@gold), amount_of_food = (0.9*@food)
-		WHERE Clan.clan_name = @loser_id;
+	SET @winner_gold_change = @gold;
+	SET @loser_gold_change = -1*@gold;
+	SET @winner_food_change = @food;
+	SET @loser_food_change = -1*@food;
 
-	UPDATE Clan
-		SET amount_of_gold = (1.1*@gold), amount_of_food = (1.1*@food)
-		WHERE Clan.clan_name = @winner_id;
+	EXEC dbo.UpdateClanProperty 'amount_of_gold', @loser_gold_change, @loser_id;
+	EXEC dbo.UpdateClanProperty 'amount_of_food', @loser_food_change, @loser_id;
+
+	EXEC dbo.UpdateClanProperty 'amount_of_gold', @winner_gold_change, @winner_id;
+	EXEC dbo.UpdateClanProperty 'amount_of_food', @winner_food_change, @winner_id;
 
 	SELECT @sol_rand_winner = RAND()*(20-10)+10;
 	SELECT @sol_rand_loser = RAND()*(30-20)+20;
 
-	UPDATE Clan
-		SET solders_num = (dbo.GetPropertyAmount(@loser_id, 'solders_num')*(1-@sol_rand_loser))
-		WHERE Clan.clan_name = @loser_id;
+	SET @sol_rand_winner = dbo.GetPropertyAmount(@winner_id, 'solders_num')*(@sol_rand_winner);
+	SET @sol_rand_loser = dbo.GetPropertyAmount(@loser_id, 'solders_num')*(@sol_rand_loser);
 
-	UPDATE Clan
-		SET solders_num = (dbo.GetPropertyAmount(@winner_id, 'solders_num')*(1-@sol_rand_winner))
-		WHERE Clan.clan_name = @winner_id;
+	EXEC dbo.UpdateClanProperty 'solders_num', @sol_rand_loser, @loser_id;
+	EXEC dbo.UpdateClanProperty 'solders_num', @sol_rand_winner, @winner_id;
+
+	SELECT @loser_experience = RAND()*(30-20)+20;
+	SELECT @winner_experience = RAND()*(30-20)+20;
+
+	EXEC UpdateClanProperty 'experiment', @loser_experience, @loser_id;
+	EXEC UpdateClanProperty 'experiment', @winner_experience, @winner_id;
+	UPDATE Clan SET clan_level = (experiment%100)
+          WHERE Clan.clan_name = @loser_id;
+	UPDATE Clan SET clan_level = (experiment%100)
+          WHERE Clan.clan_name = @winner_id;
 END
 GO

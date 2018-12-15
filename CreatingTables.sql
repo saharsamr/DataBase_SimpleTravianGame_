@@ -7,7 +7,7 @@ CREATE TABLE Building (
 
 CREATE TABLE Clan (
     clan_name VARCHAR(255) NOT NULL PRIMARY KEY,
-    slogan VARCHAR(255),
+    slogan VARCHAR(1023),
     amount_of_gold INT DEFAULT 0,
     amount_of_wood INT DEFAULT 0,
     amount_of_food INT DEFAULT 0,
@@ -15,25 +15,33 @@ CREATE TABLE Clan (
     experiment INT DEFAULT 0,
     clan_level INT DEFAULT 0,
     default_type_building INT FOREIGN KEY REFERENCES Building(building_id),
-    CONSTRAINT not_negetive CHECK (
+    CONSTRAINT not_negative CHECK (
         amount_of_gold >= 0 AND
         amount_of_wood >= 0 AND
         amount_of_food >= 0 AND
-        solders_num >= 0
+        solders_num >= 0 AND
+        experiment >= 0 AND
+        clan_level >= 0
     )
 );
 
 CREATE TABLE Role (
     role_id INT IDENTITY(1,1) PRIMARY KEY,
     role_name VARCHAR(65) NOT NULL,
-    uniqueness INT NOT NULL --true or false!
+    uniqueness INT NOT NULL CHECK (uniqueness IN (0,1))
 );
 
 CREATE TABLE RolesOfClans (
     id INT IDENTITY(1,1) PRIMARY KEY,
     clan_name VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
     role_id INT FOREIGN KEY REFERENCES Role(role_id),
-    CONSTRAINT unique_role_in_clan UNIQUE (clan_name, role_id)
+    building_permission INT,
+    management_permission INT,
+    CONSTRAINT unique_role_in_clan UNIQUE (clan_name, role_id),
+    CONSTRAINT be_boolean CHECK (
+            building_permission IN (0,1) AND
+            management_permission IN (0,1)
+    )
 );
 
 CREATE TABLE Duty (
