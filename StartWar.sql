@@ -30,6 +30,8 @@ BEGIN
 			SET @loser_id = @Starter;
 		END
 
+		INSERT INTO DoWar (starter, threatened, winner_id)
+			VALUES (@Starter, @Threatened, @winner);
 		EXEC dbo.DoWarEffect @winner_id, @loser_id;
 	END
 
