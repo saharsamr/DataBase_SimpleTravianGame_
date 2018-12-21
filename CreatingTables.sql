@@ -14,7 +14,7 @@ CREATE TABLE Clan (
     solders_num INT DEFAULT 0,
     experiment INT DEFAULT 0,
     clan_level INT DEFAULT 0,
-    default_type_building INT FOREIGN KEY REFERENCES Building(building_id),
+    default_type_building INT FOREIGN KEY REFERENCES Building(building_id) ON DELETE SET NULL,
     CONSTRAINT not_negative CHECK (
         amount_of_gold >= 0 AND
         amount_of_wood >= 0 AND
@@ -33,8 +33,8 @@ CREATE TABLE Role (
 
 CREATE TABLE RolesOfClans (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    clan_name VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
-    role_id INT FOREIGN KEY REFERENCES Role(role_id),
+    clan_name VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name) ON DELETE CASCADE,
+    role_id INT FOREIGN KEY REFERENCES Role(role_id) ON DELETE CASCADE,
     building_permission INT,
     management_permission INT,
     CONSTRAINT unique_role_in_clan UNIQUE (clan_name, role_id),
@@ -53,8 +53,8 @@ CREATE TABLE UserData (
     username VARCHAR(255) NOT NULL PRIMARY KEY,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    user_current_duty INT FOREIGN KEY REFERENCES Duty(duty_id),
-    roles_of_clan_id INT FOREIGN KEY REFERENCES RolesOfClans(id),
+    user_current_duty INT FOREIGN KEY REFERENCES Duty(duty_id) ON DELETE CASCADE,
+    roles_of_clan_id INT FOREIGN KEY REFERENCES RolesOfClans(id) ON DELETE SET NULL,
     CONSTRAINT email_format CHECK (
         email LIKE '%_@__%.__%'
     )
@@ -62,15 +62,15 @@ CREATE TABLE UserData (
 
 CREATE TABLE UserDutyHistory (
     duty_history_id INT IDENTITY(1,1) PRIMARY KEY,
-    username VARCHAR(255) FOREIGN KEY REFERENCES UserData(username),
+    username VARCHAR(255) FOREIGN KEY REFERENCES UserData(username) ON DELETE CASCADE,
     duty_id INT FOREIGN KEY REFERENCES DUTY(duty_id),
     passed_cycle INT DEFAULT 0, --TODO: in bayad ziad she ye ja :-???
     CONSTRAINT be_unique UNIQUE (username, duty_id)
 );
 
 CREATE TABLE BuildingsOfClans (
-    clan_name VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
-    building_id INT FOREIGN KEY REFERENCES Building(building_id),
+    clan_name VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name) ON DELETE CASCADE,
+    building_id INT FOREIGN KEY REFERENCES Building(building_id) ON DELETE CASCADE,
     percentage_of_progress DECIMAL DEFAULT 0,
     PRIMARY KEY (clan_name, building_id),
     CONSTRAINT percentage CHECK (
@@ -79,7 +79,7 @@ CREATE TABLE BuildingsOfClans (
 );
 
 CREATE TABLE DoWar (
-    starter VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
+    starter VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name), -- TODO: WRITE TRIGGER
     threatened VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
     winner_id INT CHECK (winner_id IN (0, 1)),
     war_time TIMESTAMP,
