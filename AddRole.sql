@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE dbo.AddRole -- TODO: set role ham darim?
+CREATE PROCEDURE dbo.AddRole
 	@role_name VARCHAR(65),
 	@uniqueness INT
 AS

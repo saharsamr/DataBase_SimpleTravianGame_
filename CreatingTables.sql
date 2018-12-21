@@ -53,7 +53,7 @@ CREATE TABLE UserData (
     username VARCHAR(255) NOT NULL PRIMARY KEY,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    user_current_duty INT FOREIGN KEY REFERENCES Duty(duty_id) ON DELETE CASCADE,
+    user_current_duty INT FOREIGN KEY REFERENCES Duty(duty_id) ON DELETE CASCADE, --TODO: in set null barash manteqi tar nis?
     roles_of_clan_id INT FOREIGN KEY REFERENCES RolesOfClans(id) ON DELETE SET NULL,
     CONSTRAINT email_format CHECK (
         email LIKE '%_@__%.__%'
@@ -64,7 +64,7 @@ CREATE TABLE UserDutyHistory (
     duty_history_id INT IDENTITY(1,1) PRIMARY KEY,
     username VARCHAR(255) FOREIGN KEY REFERENCES UserData(username) ON DELETE CASCADE,
     duty_id INT FOREIGN KEY REFERENCES DUTY(duty_id),
-    passed_cycle INT DEFAULT 0, --TODO: in bayad ziad she ye ja :-???
+    passed_cycle INT DEFAULT 0,
     CONSTRAINT be_unique UNIQUE (username, duty_id)
 );
 
@@ -79,7 +79,7 @@ CREATE TABLE BuildingsOfClans (
 );
 
 CREATE TABLE DoWar (
-    starter VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name), -- TODO: WRITE TRIGGER
+    starter VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
     threatened VARCHAR(255) FOREIGN KEY REFERENCES Clan(clan_name),
     winner_id INT CHECK (winner_id IN (0, 1)),
     war_time TIMESTAMP,
