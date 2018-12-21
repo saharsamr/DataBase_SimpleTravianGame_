@@ -49,9 +49,9 @@ BEGIN
 
 	EXEC UpdateClanProperty 'experiment', @loser_experience, @loser_id;
 	EXEC UpdateClanProperty 'experiment', @winner_experience, @winner_id;
-	UPDATE Clan SET clan_level = (experiment%100)
+	UPDATE Clan SET clan_level = (experiment/100)
           WHERE Clan.clan_name = @loser_id;
-	UPDATE Clan SET clan_level = (experiment%100)
+	UPDATE Clan SET clan_level = (experiment/100)
           WHERE Clan.clan_name = @winner_id;
 END
 GO
