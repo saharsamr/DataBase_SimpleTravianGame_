@@ -1,14 +1,10 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('database', null, null, {
+var sequelize = new Sequelize('TRAVIANS', undefined, undefined, {
     dialect: 'mssql',
-
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
+    host: 'DESKTOP-R0UVS7R'
 });
+
+console.log(sequelize.config);
 
 module.exports = sequelize;
