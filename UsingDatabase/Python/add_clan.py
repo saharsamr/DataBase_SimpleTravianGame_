@@ -1,6 +1,3 @@
-import connect_to_db
-
-
 def add_clan(cnxn):
     clan_name = raw_input('Enter clan name:')
     slogan = raw_input('Enter slogan:')            #TODO: seems that slogan can be a single word!
