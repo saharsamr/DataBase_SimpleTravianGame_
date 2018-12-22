@@ -15,7 +15,7 @@ BEGIN
 	
 	SELECT @result = @property_name FROM Clan
 		WHERE Clan.clan_name = @clan_name;
-	
+
 	RETURN @result
 END
 GO

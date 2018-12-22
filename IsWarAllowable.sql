@@ -14,8 +14,11 @@ BEGIN
 			@second_clan_level INT,
 			@result INT;
 
-	SELECT @first_clan_level = dbo.GetPropertyAmount(@first_clan, 'clan_level');
-	SELECT @second_clan_level = dbo.GetPropertyAmount(@second_clan, 'clan_level');
+	SELECT @first_clan_level = clan_level FROM Clan
+		WHERE Clan.clan_name = @first_clan;
+
+	SELECT @second_clan_level = clan_level FROM Clan
+		WHERE Clan.clan_name = @second_clan;
 
 	IF (ABS(@first_clan_level - @second_clan_level) <= 1)
 		SET @result = 1;

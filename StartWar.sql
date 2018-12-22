@@ -13,7 +13,7 @@ BEGIN
 			@loser_id VARCHAR(255),
 			@has_war_permission INT;
 
-	SELECT @has_war_permission = dbo.IsWarAllowable(@Starter, @Threatened);
+	SET @has_war_permission = dbo.IsWarAllowable(@Starter, @Threatened);
 
 	IF @has_war_permission = 1
 	BEGIN
