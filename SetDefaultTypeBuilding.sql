@@ -13,8 +13,8 @@ BEGIN
 	SELECT @building_id = building_id FROM Building
 		WHERE building_name = @default_type_building;
 
-	IF dbo.HasPermission(@doer_username, 'building_permission') = 1 OR
-			dbo.HasPermission(@doer_username, 'management_permission') = 1
+	IF dbo.HasPermission(@clan_name, @doer_username, 'building_permission') = 1 OR
+			dbo.HasPermission(@clan_name, @doer_username, 'management_permission') = 1
     UPDATE Clan
 		    SET default_type_building = @building_id
 		    WHERE Clan.clan_name = @clan_name;

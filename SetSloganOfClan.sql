@@ -9,7 +9,7 @@ CREATE PROCEDURE dbo.SetSloganOfClan
 		@doer_username VARCHAR(255)
 AS
 BEGIN
-	IF dbo.HasPermission(@doer_username, 'management_permission') = 1
+	IF dbo.HasPermission(@clan_name, @doer_username, 'management_permission') = 1
     UPDATE Clan
 		    SET slogan = @slogan
 		    WHERE Clan.clan_name = @clan_name;

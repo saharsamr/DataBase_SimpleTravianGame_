@@ -4,6 +4,7 @@ import start_war
 import change_building_type
 import change_user_duty
 import set_clan_slogan
+import remove_user_from_clan
 
 
 cnxn = connect_to_db.connect_to_db()
@@ -14,7 +15,8 @@ print (
         '2-Start War\n' +
         '3-Change Default Building Type\n' +
         '4-Change User Duty\n' +
-        '5-Change Clan Slogan\n'
+        '5-Change Clan Slogan\n' +
+        '6-Remove a User From Clan'
        )
 command = raw_input()
 # TODO: age nemishod ham bayad ye kari bokonim
@@ -24,7 +26,9 @@ elif command == '2':
     start_war.start_war(cnxn)
 elif command == '3':
     change_building_type.change_building_type(cnxn)
-elif command == '4':
+elif command == '4': # TODO: if not exist is not working.
     change_user_duty.change_user_duty(cnxn)
 elif command == '5':
     set_clan_slogan.set_clan_slogan(cnxn)
+elif command == '6':
+    remove_user_from_clan.remove_user_from_clan(cnxn)

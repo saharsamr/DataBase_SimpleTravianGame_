@@ -5,6 +5,7 @@ GO
 
 CREATE FUNCTION HasPermission
 (
+  @clan_name VARCHAR(255),
 	@username VARCHAR(255),
   @permission_name VARCHAR(255)
 )
@@ -19,10 +20,10 @@ BEGIN
 
   IF @permission_name = 'management_permission'
     SELECT @result = management_permission FROM RolesOfClans
-        WHERE RolesOfClans.id = @role_of_clan_id;
+        WHERE RolesOfClans.id = @role_of_clan_id AND clan_name = @clan_name;
   ELSE
     SELECT @result = building_permission FROM RolesOfClans
-        WHERE RolesOfClans.id = @role_of_clan_id;
+        WHERE RolesOfClans.id = @role_of_clan_id AND clan_name = @clan_name;
 
   RETURN @result;
 END
