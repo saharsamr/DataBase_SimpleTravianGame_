@@ -17,8 +17,12 @@ BEGIN
   SELECT @role_of_clan_id = roles_of_clan_id FROM UserData
     WHERE UserData.username = @username;
 
-  SELECT @result = @permission_name FROM RolesOfClans
-                  WHERE RolesOfClans.id = @role_of_clan_id;
+  IF @permission_name = 'management_permission'
+    SELECT @result = management_permission FROM RolesOfClans
+        WHERE RolesOfClans.id = @role_of_clan_id;
+  ELSE
+    SELECT @result = building_permission FROM RolesOfClans
+        WHERE RolesOfClans.id = @role_of_clan_id;
 
   RETURN @result;
 END
