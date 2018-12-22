@@ -2,11 +2,15 @@ import connect_to_db
 import add_clan
 import start_war
 import change_building_type
+import change_user_duty
 
 
 cnxn = connect_to_db.connect_to_db()
 
-print ('Enter the command number:\n1-Add Clan\n2-Start War\n3-Change Default Building Type\n')
+print (
+        'Enter the command number:\n1-Add Clan\n2-Start War\n3-Change Default Building Type\n'+
+        '4-Change User Duty\n'
+       )
 command = raw_input()
 
 if command == '1':
@@ -15,3 +19,5 @@ elif command == '2':
     start_war.start_war(cnxn)
 elif command == '3':
     change_building_type.change_building_type(cnxn)
+elif command == '4':
+    change_user_duty.change_user_duty(cnxn)
