@@ -14,7 +14,12 @@ AS
        WHEN (starter = @clan_name AND winner_id = 0) OR (threatened = @clan_name AND winner_id = 1)
                THEN 1
        ELSE 0
-         END AS HAS_WIN
+         END AS HAS_WIN,
+          CASE
+              WHEN (starter = @clan_name)
+                THEN threatened
+              ELSE starter
+              END AS OPPONENT
     FROM DoWar
   );
 GO

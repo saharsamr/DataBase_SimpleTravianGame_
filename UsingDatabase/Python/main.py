@@ -5,6 +5,7 @@ import change_building_type
 import change_user_duty
 import set_clan_slogan
 import remove_user_from_clan
+import view_clan_wars_list
 
 
 cnxn = connect_to_db.connect_to_db()
@@ -16,7 +17,8 @@ print (
         '3-Change Default Building Type\n' +
         '4-Change User Duty\n' +
         '5-Change Clan Slogan\n' +
-        '6-Remove a User From Clan'
+        '6-Remove a User From Clan\n' +
+        '7-View List of Clan Wars\n'
        )
 command = raw_input()
 # TODO: age nemishod ham bayad ye kari bokonim
@@ -32,3 +34,5 @@ elif command == '5':
     set_clan_slogan.set_clan_slogan(cnxn)
 elif command == '6':
     remove_user_from_clan.remove_user_from_clan(cnxn)
+elif command == '7':
+    view_clan_wars_list.view_clan_war_list(cnxn)
