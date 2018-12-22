@@ -1,10 +1,17 @@
-const Sequelize = require('sequelize');
+const mssql = require('mssql');
 
-var sequelize = new Sequelize('TRAVIANS', undefined, undefined, {
-    dialect: 'mssql',
-    host: 'DESKTOP-R0UVS7R'
+const config = {
+    database: 'TRAVIANS',
+    server: 'localhost',
+    user: 'sahar',
+    password: '123'
+};
+
+mssql.connect(config, function (err) {
+    if (err) console.log(err);
+    var req = new mssql.Request();
+    req.query('SELECT * FROM UserData')
+    console.log(recordset);
 });
 
-console.log(sequelize.config);
-
-module.exports = sequelize;
+// module.exports = sequelize;
