@@ -9,16 +9,34 @@ CREATE PROCEDURE dbo.SetDefaultTypeBuilding
 		@doer_username VARCHAR(255)
 AS
 BEGIN
-	DECLARE @building_id INT;
-	SELECT @building_id = building_id FROM Building
-		WHERE building_name = @default_type_building;
+	DECLARE @building_id INT,
+					@exist_temp INT,
+					@exist INT = 1;
 
-	IF dbo.HasPermission(@clan_name, @doer_username, 'building_permission') = 1 OR
-			dbo.HasPermission(@clan_name, @doer_username, 'management_permission') = 1
-    UPDATE Clan
-		    SET default_type_building = @building_id
-		    WHERE Clan.clan_name = @clan_name;
-	ELSE
-		PRINT 'You do not have permission to change or set building type.'
+	SELECT @exist_temp = COUNT(*) FROM UserData
+		WHERE username = @doer_username;
+	SET @exist = @exist*@exist_temp;
+
+	SELECT @exist_temp = COUNT(*) FROM Clan
+		WHERE clan_name = @clan_name;
+	SET @exist = @exist*@exist_temp;
+
+	SELECT @exist_temp = COUNT(*) FROM Building
+		WHERE building_name = @default_type_building;
+	SET @exist = @exist*@exist_temp;
+
+	IF @exist != 0
+	BEGIN
+		SELECT @building_id = building_id FROM Building
+			WHERE building_name = @default_type_building;
+
+		IF dbo.HasPermission(@clan_name, @doer_username, 'building_permission') = 1 OR
+				dbo.HasPermission(@clan_name, @doer_username, 'management_permission') = 1
+			UPDATE Clan
+					SET default_type_building = @building_id
+					WHERE Clan.clan_name = @clan_name;
+		ELSE
+			PRINT 'You do not have permission to change or set building type.'
+	END
 END
 GO
