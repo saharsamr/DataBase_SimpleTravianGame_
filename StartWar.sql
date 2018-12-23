@@ -11,29 +11,44 @@ BEGIN
 	DECLARE @winner INT,
 			@winner_id VARCHAR(255),
 			@loser_id VARCHAR(255),
-			@has_war_permission INT;
+			@has_war_permission INT,
+			@exist_temp INT,
+			@exist INT = 1;
 
-	SET @has_war_permission = dbo.IsWarAllowable(@Starter, @Threatened);
+	SELECT @exist_temp = COUNT(*) FROM Clan
+		WHERE clan_name = @Starter;
+	SET @exist = @exist*@exist_temp;
 
-	IF @has_war_permission = 1
+	SELECT @exist_temp = COUNT(*) FROM Clan
+		WHERE clan_name = @Threatened;
+	SET @exist = @exist*@exist_temp;
+
+	IF @Starter = @Threatened
+		SET @exist = 0;
+
+	IF @exist != 0
 	BEGIN
-		SET @winner = dbo.DetermineWinner(@Starter, @Threatened);
+		SET @has_war_permission = dbo.IsWarAllowable(@Starter, @Threatened);
 
-		IF (@winner = 1)
+		IF @has_war_permission = 1
 		BEGIN
-			SET @winner_id = @Starter;
-			SET @loser_id = @Threatened;
-		END
-		ELSE
-		BEGIN
-			SET @winner_id = @Threatened;
-			SET @loser_id = @Starter;
-		END
+			SET @winner = dbo.DetermineWinner(@Starter, @Threatened);
 
-		INSERT INTO DoWar (starter, threatened, winner_id)
-			VALUES (@Starter, @Threatened, @winner);
-		EXEC dbo.DoWarEffect @winner_id, @loser_id;
+			IF (@winner = 1)
+			BEGIN
+				SET @winner_id = @Starter;
+				SET @loser_id = @Threatened;
+			END
+			ELSE
+			BEGIN
+				SET @winner_id = @Threatened;
+				SET @loser_id = @Starter;
+			END
+
+			INSERT INTO DoWar (starter, threatened, winner_id)
+				VALUES (@Starter, @Threatened, @winner);
+			EXEC dbo.DoWarEffect @winner_id, @loser_id;
+		END
 	END
-
 END
 GO
