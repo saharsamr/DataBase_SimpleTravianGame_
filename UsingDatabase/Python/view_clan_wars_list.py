@@ -3,9 +3,15 @@ def view_clan_war_list(cnxn):
 
     cursor = cnxn.cursor()
 
-    command = 'SELECT * FROM dbo.ClanWars( ? )'
+    command = 'SELECT * FROM Clan WHERE clan_name = ?'
     cursor.execute(command, (clan_name))
 
-    for row in cursor.fetchall():
-        print row
+    if len(cursor.fetchall()) == 0:
+        print 'No clan with this name found.'
+    else:
+        command = 'SELECT * FROM dbo.ClanWars( ? )'
+        cursor.execute(command, (clan_name))
+
+        for row in cursor.fetchall():
+            print row
 
