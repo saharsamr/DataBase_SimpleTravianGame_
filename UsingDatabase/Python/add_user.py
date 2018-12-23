@@ -4,10 +4,21 @@ def add_user(cnxn):
     email = raw_input('Enter email:')
     duty_name = raw_input('Enter duty:')
 
-    cursor = cnxn.cursor()
+    try:
+        cursor = cnxn.cursor()
 
-    command = 'EXEC dbo.AddUser ?, ?, ?, ?'
+        command = 'EXEC dbo.AddUser ?, ?, ?, ?'
 
-    cursor.execute(command, (username, pass_hash, email, duty_name))
-    cnxn.commit()
+        cursor.execute(command, (username, pass_hash, email, duty_name))
+        cnxn.commit()
+
+        command = 'SELECT * FROM UserData WHERE username = ?'
+        cursor.execute(command, (username))
+
+        if len(cursor.fetchall()) == 0:
+            print 'Not a valid username to insert'
+        else:
+            print 'User added'
+    except:
+        print 'Duplicate user'
 
