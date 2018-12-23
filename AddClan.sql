@@ -1,8 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE PROCEDURE dbo.AddClan
 	@clan_name VARCHAR(255),
 	@slogan VARCHAR(255),
@@ -32,8 +27,8 @@ BEGIN
 	BEGIN
 		INSERT INTO dbo.Clan (clan_name, slogan, default_type_building)
 			VALUES (@clan_name, @slogan, @building_id);
-		INSERT INTO dbo.RolesOfClans (clan_name, role_id)
-			VALUES (@clan_name, @role_id);
+		INSERT INTO dbo.RolesOfClans (clan_name, role_id, building_permission, management_permission)
+			VALUES (@clan_name, @role_id, 1, 1);
 		SELECT @roles_clans_id = id
 			FROM RolesOfClans
 			WHERE RolesOfClans.clan_name = @clan_name
@@ -43,4 +38,5 @@ BEGIN
 	END
 
 END
-GO
+go
+

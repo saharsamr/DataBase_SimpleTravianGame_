@@ -7,7 +7,7 @@ AS
 BEGIN
   DECLARE @role_id INT,
           @roles_clans_id INT,
-          @uniqueness_role INT,
+          @uniqueness_role INT = 0,
           @exist_temp INT,
           @exist INT = 1,
           @is_member INT = 0;
@@ -38,21 +38,26 @@ BEGIN
   BEGIN
     IF dbo.HasPermission(@clan_name, @doer_username, 'management_permission') = 1
     BEGIN
+      DECLARE @building_permission INT = 0,
+              @management_permission INT = 0;
+      IF @role_name = 'Manager'
+      BEGIN
+        SET @building_permission = 1;
+        SET @management_permission = 1;
+      END
+      ELSE IF @role_name = 'Assistant'
+        SET @building_permission = 1;
+
       SELECT @role_id = role_id, @uniqueness_role = uniqueness
         FROM Role WHERE Role.role_name = @role_name;
-
-      SELECT @roles_clans_id = id
-        FROM RolesOfClans
-        WHERE RolesOfClans.clan_name = @clan_name
-          AND RolesOfClans.role_id = @role_id;
 
       IF @uniqueness_role = 1
         IF NOT EXISTS(SELECT * FROM RolesOfClans
                       WHERE RolesOfClans.clan_name = @clan_name
                         AND RolesOfClans.role_id = @role_id)
         BEGIN
-          INSERT INTO dbo.RolesOfClans (clan_name, role_id)
-            VALUES (@clan_name, @role_id);
+          INSERT INTO dbo.RolesOfClans (clan_name, role_id, building_permission, management_permission)
+            VALUES (@clan_name, @role_id, @building_permission, @management_permission);
           SELECT @roles_clans_id = id
             FROM RolesOfClans
             WHERE RolesOfClans.clan_name = @clan_name
@@ -63,8 +68,30 @@ BEGIN
         ELSE
           PRINT 'This role should be unique, and there is one already.'
       ELSE
-        UPDATE UserData SET roles_of_clan_id = @roles_clans_id
-          WHERE UserData.username = @username;
+      BEGIN
+        IF NOT EXISTS(SELECT * FROM RolesOfClans
+                      WHERE RolesOfClans.clan_name = @clan_name
+                        AND RolesOfClans.role_id = @role_id)
+        BEGIN
+          INSERT INTO dbo.RolesOfClans (clan_name, role_id, building_permission, management_permission)
+            VALUES (@clan_name, @role_id, @building_permission, @management_permission);
+          SELECT @roles_clans_id = id
+            FROM RolesOfClans
+            WHERE RolesOfClans.clan_name = @clan_name
+              AND RolesOfClans.role_id = @role_id;
+          UPDATE UserData SET roles_of_clan_id = @roles_clans_id
+            WHERE UserData.username = @username;
+        END
+        ELSE
+        BEGIN
+          SELECT @roles_clans_id = id
+              FROM RolesOfClans
+              WHERE RolesOfClans.clan_name = @clan_name
+                AND RolesOfClans.role_id = @role_id;
+          UPDATE UserData SET roles_of_clan_id = @roles_clans_id
+            WHERE UserData.username = @username;
+        END
+      END
     END
     ELSE
       PRINT 'You do not have permission to add users to clan.'

@@ -5,7 +5,8 @@ GO
 
 CREATE PROCEDURE dbo.StartWar
 	@Starter VARCHAR(255),
-	@Threatened VARCHAR(255)
+	@Threatened VARCHAR(255),
+	@doer_username VARCHAR(255)
 AS
 BEGIN
 	DECLARE @winner INT,
@@ -13,7 +14,10 @@ BEGIN
 			@loser_id VARCHAR(255),
 			@has_war_permission INT,
 			@exist_temp INT,
-			@exist INT = 1;
+			@exist INT = 1,
+			@has_permission INT;
+
+	SELECT @has_permission = COUNT(*) FROM dbo.CheckUserMembership(@doer_username, @Starter);
 
 	SELECT @exist_temp = COUNT(*) FROM Clan
 		WHERE clan_name = @Starter;
@@ -26,7 +30,7 @@ BEGIN
 	IF @Starter = @Threatened
 		SET @exist = 0;
 
-	IF @exist != 0
+	IF @exist != 0 AND @has_permission != 0
 	BEGIN
 		SET @has_war_permission = dbo.IsWarAllowable(@Starter, @Threatened);
 

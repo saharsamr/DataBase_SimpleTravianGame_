@@ -48,7 +48,8 @@ while True:
     elif command == '5':
         set_clan_slogan.set_clan_slogan(cnxn)
     elif command == '6':
-        remove_user_from_clan.remove_user_from_clan(cnxn)
+        remove_user_from_clan.remove_user_from_clan(cnxn)   # TODO: can we remove a user from a clan that
+                                                            # is not a participant on that?
     elif command == '7':
         view_clan_wars_list.view_clan_war_list(cnxn)
     elif command == '8':

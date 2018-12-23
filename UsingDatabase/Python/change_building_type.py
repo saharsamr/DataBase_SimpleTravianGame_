@@ -10,7 +10,7 @@ def change_building_type(cnxn):
     cursor.execute(command, (clan_name, building_type, doer))
     cnxn.commit()
 
-    command = 'SELECT * FROM dbo.CheckAUserRoleInClan(?, ?)'
+    command = 'SELECT * FROM dbo.CheckBuildingOfAClan(?, ?)'
     cursor.execute(command, (clan_name, building_type))
 
     if len(cursor.fetchall()) == 0:

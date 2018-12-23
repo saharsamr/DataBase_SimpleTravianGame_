@@ -1,8 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE FUNCTION dbo.CheckAUserRoleInClan
 (
 	@username VARCHAR(255),
@@ -17,10 +12,11 @@ AS
       UserData As UD
       ON RC.id = UD.roles_of_clan_id
       INNER JOIN
-        (SELECT role_id AS role FROM Role )AS R
+        (SELECT role_id AS role, role_name FROM Role )AS R
       ON RC.role_id = R.role
       WHERE UD.username = @username AND
-        R.role = @role_name AND
+        R.role_name = @role_name AND
         RC.clan_name = @clan_name
-  );
-GO
+  )
+go
+

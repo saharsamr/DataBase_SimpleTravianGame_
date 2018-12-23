@@ -6,16 +6,22 @@ def add_clan(cnxn):
 
     cursor = cnxn.cursor()
 
-    command = 'EXEC dbo.AddClan '+clan_name+', '+slogan+', '+building+', '+doer
-
-    cursor.execute(command)
-    cnxn.commit()
-
     command = 'SELECT * FROM dbo.GetAClanInfo( ? )'
     cursor.execute(command, (clan_name))
 
     if len(cursor.fetchall()) == 0:
-        print 'Not a valid clan to insert'
+        command = 'EXEC dbo.AddClan '+clan_name+', '+slogan+', '+building+', '+doer
+
+        cursor.execute(command)
+        cnxn.commit()
+
+        command = 'SELECT * FROM dbo.GetAClanInfo( ? )'
+        cursor.execute(command, (clan_name))
+
+        if len(cursor.fetchall()) == 0:
+            print 'Not a valid clan to insert'
+        else:
+            print 'Clan added'
     else:
-        print 'Clan added'
+        print 'This clan already exists'
 

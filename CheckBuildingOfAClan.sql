@@ -1,8 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE FUNCTION dbo.CheckBuildingOfAClan
 (
   @clan_name VARCHAR(255),
@@ -13,9 +8,10 @@ AS
 	RETURN (
     SELECT * FROM BuildingsOfClans AS BC
       INNER JOIN
-      (SELECT building_id AS id FROM Building) AS B
+      (SELECT building_id AS id, building_name FROM Building) AS B
       ON BC.building_id = B.id
       WHERE BC.clan_name = @clan_name AND
-      B.id = @building_type
-  );
-GO
+      B.building_name = @building_type
+  )
+go
+

@@ -10,8 +10,8 @@ def remove_user_from_clan(cnxn):
     cursor.execute(command, (clan_name, username, doer))
     cnxn.commit()
 
-    command = 'SELECT * FROM dbo.CheckUserMembership(?)'
-    cursor.execute(command, (username))
+    command = 'SELECT * FROM dbo.CheckUserMembership(?, ?)'
+    cursor.execute(command, (username, clan_name))
 
     if len(cursor.fetchall()) != 0:
         print 'Not a valid statement'
