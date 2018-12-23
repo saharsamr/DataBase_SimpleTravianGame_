@@ -9,7 +9,8 @@ BEGIN
           @roles_clans_id INT,
           @uniqueness_role INT,
           @exist_temp INT,
-          @exist INT = 1;
+          @exist INT = 1,
+          @is_member INT = 0;
 
   SELECT @exist_temp = COUNT(*) FROM UserData
     WHERE username = @username;
@@ -27,7 +28,13 @@ BEGIN
     WHERE role_name = @role_name;
   SET @exist = @exist*@exist_temp;
 
-  IF @exist != 0
+  SELECT @is_member = COUNT(*) FROM UserData AS UD
+  INNER JOIN
+  RolesOfClans AS RC
+  ON RC.id = UD.roles_of_clan_id
+  WHERE UD.username = @username;
+
+  IF @exist != 0 AND @is_member = 0
   BEGIN
     IF dbo.HasPermission(@clan_name, @doer_username, 'management_permission') = 1
     BEGIN

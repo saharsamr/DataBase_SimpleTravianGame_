@@ -14,7 +14,7 @@ def add_user_to_clan(cnxn):
     command = 'SELECT * FROM dbo.CheckAUserRoleInClan(?, ?, ?)'
     cursor.execute(command, (username, role_name, clan_name))
 
-    if len(cursor.fetchall()) == 0:
+    if len(cursor.fetchall()) != 1:
         print 'Invalid statement'
     else:
         print 'User added to clan successfully'
