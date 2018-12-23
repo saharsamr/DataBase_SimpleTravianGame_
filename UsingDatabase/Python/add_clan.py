@@ -4,11 +4,18 @@ def add_clan(cnxn):
     building = raw_input('Enter default building:')
     doer = raw_input('doer username:')
 
-    # cnxn = connect_to_db.connect_to_db()
     cursor = cnxn.cursor()
 
     command = 'EXEC dbo.AddClan '+clan_name+', '+slogan+', '+building+', '+doer
 
     cursor.execute(command)
     cnxn.commit()
+
+    command = 'SELECT * FROM Clan WHERE clan_name = ?'
+    cursor.execute(command, (clan_name))
+
+    if len(cursor.fetchall()) == 0:
+        print 'Not a valid clan to insert'
+    else:
+        print 'Clan added'
 
