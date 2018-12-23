@@ -11,7 +11,7 @@ def add_clan(cnxn):
     cursor.execute(command)
     cnxn.commit()
 
-    command = 'SELECT * FROM Clan WHERE clan_name = ?'
+    command = 'SELECT * FROM dbo.GetAClanInfo( ? )'
     cursor.execute(command, (clan_name))
 
     if len(cursor.fetchall()) == 0:

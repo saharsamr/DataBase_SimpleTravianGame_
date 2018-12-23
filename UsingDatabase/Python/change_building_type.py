@@ -10,12 +10,7 @@ def change_building_type(cnxn):
     cursor.execute(command, (clan_name, building_type, doer))
     cnxn.commit()
 
-    command = 'SELECT * FROM BuildingsOfClans AS BC ' \
-              'INNER JOIN ' \
-              'Building AS B ' \
-              'ON BC.building_id = B.building_id ' \
-              'WHERE BC.clan_name = ? AND ' \
-              'B.building_name = ?'
+    command = 'SELECT * FROM dbo.CheckAUserRoleInClan(?, ?)'
     cursor.execute(command, (clan_name, building_type))
 
     if len(cursor.fetchall()) == 0:

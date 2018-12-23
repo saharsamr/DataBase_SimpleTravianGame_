@@ -1,7 +1,7 @@
 def view_list_of_clans(cnxn):
     cursor = cnxn.cursor()
 
-    command = 'SELECT clan_name FROM Clan'
+    command = 'SELECT * FROM dbo.GetListOfClans()'
 
     cursor.execute(command)
 

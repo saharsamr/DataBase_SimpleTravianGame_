@@ -10,7 +10,7 @@ def remove_user_from_clan(cnxn):
     cursor.execute(command, (clan_name, username, doer))
     cnxn.commit()
 
-    command = 'SELECT * FROM RolesOfClans WHERE username = ?'
+    command = 'SELECT * FROM dbo.CheckUserMembership(?)'
     cursor.execute(command, (username))
 
     if len(cursor.fetchall()) != 0:

@@ -3,7 +3,7 @@ def view_clan_war_list(cnxn):
 
     cursor = cnxn.cursor()
 
-    command = 'SELECT * FROM Clan WHERE clan_name = ?'
+    command = 'SELECT * FROM dbo.GetAClanInfo( ? )'
     cursor.execute(command, (clan_name))
 
     if len(cursor.fetchall()) == 0:

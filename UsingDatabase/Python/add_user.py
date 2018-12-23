@@ -12,7 +12,7 @@ def add_user(cnxn):
         cursor.execute(command, (username, pass_hash, email, duty_name))
         cnxn.commit()
 
-        command = 'SELECT * FROM UserData WHERE username = ?'
+        command = 'SELECT * FROM dbo.GetAUserInfo( ? )'
         cursor.execute(command, (username))
 
         if len(cursor.fetchall()) == 0:

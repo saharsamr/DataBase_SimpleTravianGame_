@@ -9,12 +9,7 @@ def change_user_duty(cnxn):
     cursor.execute(command, (username, duty_name))
     cnxn.commit()
 
-    command = 'SELECT * FROM UserDutyHistory AS UDH ' \
-              'INNER JOIN ' \
-              'Duty AS D ' \
-              'ON UDH.duty_id = D.duty_id ' \
-              'WHERE UDH.username = ? AND ' \
-              'D.duty_name = ?'
+    command = 'SELECT * FROM dbo.CheckUserDuty(?, ?)'
     cursor.execute(command, (username, duty_name))
 
     if len(cursor.fetchall()) == 0:

@@ -10,9 +10,7 @@ def set_clan_slogan(cnxn):
     cursor.execute(command, (clan_name, slogan, doer))
     cnxn.commit()
 
-    command = 'SELECT * FROM Clan ' \
-              'WHERE clan_name = ? AND ' \
-              'slogan = ?'
+    command = 'SELECT * FROM dbo.CheckClanSlogan(?, ?)'
     cursor.execute(command, (clan_name, slogan))
 
     if len(cursor.fetchall()) == 0:

@@ -11,11 +11,7 @@ def add_user_to_clan(cnxn):
     cursor.execute(command, (username, role_name, clan_name, doer))
     cnxn.commit()
 
-    command = 'SELECT * FROM RolesOfClan AS RC ' \
-              'INNER JOIN ' \
-              'Role As R ' \
-              'ON RC.role_id = R.role_id ' \
-              'WHERE RC.username = ? AND R.role_name = ? AND RC.clan_name = ?'
+    command = 'SELECT * FROM dbo.CheckAUserRoleInClan(?, ?, ?)'
     cursor.execute(command, (username, role_name, clan_name))
 
     if len(cursor.fetchall()) == 0:
