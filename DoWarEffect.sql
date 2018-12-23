@@ -36,14 +36,14 @@ BEGIN
 		SET amount_of_gold = amount_of_gold + @loser_gold_change
 			WHERE Clan.clan_name = @loser_id;
 	UPDATE Clan
-		SET amount_of_food = amount_of_gold + @loser_food_change
+		SET amount_of_food = amount_of_food + @loser_food_change
 			WHERE Clan.clan_name = @loser_id;
 
 	UPDATE Clan
 		SET amount_of_gold = amount_of_gold + @winner_gold_change
 			WHERE Clan.clan_name = @winner_id;
 	UPDATE Clan
-		SET amount_of_food = amount_of_gold + @winner_food_change
+		SET amount_of_food = amount_of_food + @winner_food_change
 			WHERE Clan.clan_name = @winner_id;
 
 	SELECT @sol_rand_winner = solders_num FROM Clan

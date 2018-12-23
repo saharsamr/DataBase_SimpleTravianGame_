@@ -1,8 +1,7 @@
-def add_clan(cnxn):
+def add_clan(doer, cnxn):
     clan_name = raw_input('Enter clan name:')
-    slogan = raw_input('Enter slogan:')            #TODO: seems that slogan can be a single word!
+    slogan = raw_input('Enter slogan:')
     building = raw_input('Enter default building:')
-    doer = raw_input('doer username:')
 
     cursor = cnxn.cursor()
 

@@ -17,8 +17,10 @@ BEGIN
             @min_of_gold_and_wood INT,
             @gold_wood_change INT;
 
-    SET @amount_of_gold = dbo.GetPropertyAmount(@clan_name, 'amount_of_gold');
-    SET @amount_of_wood = dbo.GetPropertyAmount(@clan_name, 'amount_of_wood');
+    SELECT @amount_of_gold = amount_of_gold FROM Clan
+          WHERE Clan.clan_name = @clan_name;
+    SELECT @amount_of_wood = amount_of_wood FROM Clan
+          WHERE Clan.clan_name = @clan_name;
     SELECT @building_id = default_type_building FROM Clan
         WHERE Clan.clan_name = @clan_name;
 
@@ -63,8 +65,12 @@ BEGIN
     END
 
     SET @gold_wood_change = -1 * @amount_of_progress * 25;
-    EXEC UpdateClanProperty 'amount_of_gold', @gold_wood_change, @clan_name;
-    EXEC UpdateClanProperty 'amount_of_wood', @gold_wood_change, @clan_name;
+    UPDATE Clan
+          SET amount_of_gold = amount_of_gold + @gold_wood_change
+            WHERE Clan.clan_name = @clan_name;
+    UPDATE Clan
+          SET amount_of_wood = amount_of_wood + @gold_wood_change
+            WHERE Clan.clan_name = @clan_name;
 
   RETURN
 END

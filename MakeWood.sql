@@ -12,15 +12,20 @@ BEGIN
             @wood_change INT,
             @gold_change INT;
 
-    SET @amount_of_gold = dbo.GetPropertyAmount(@clan_name, 'amount_of_gold');
+    SELECT @amount_of_gold = amount_of_gold FROM Clan
+      WHERE Clan.clan_name = @clan_name;
     SET @sawyer_duty_power = dbo.GetSensitiveDutyPower(@clan_name, 'Sawyer');
 
     IF (@amount_of_gold >= (@sawyer_duty_power * 10))
     BEGIN
       SET @wood_change = @sawyer_duty_power * 10;
-      EXEC dbo.UpdateClanProperty 'amount_of_wood', @wood_change, @clan_name;
+      UPDATE Clan
+      SET amount_of_wood = amount_of_wood + @wood_change
+        WHERE Clan.clan_name = @clan_name;
       SET @gold_change = -1 * @wood_change;
-      EXEC dbo.UpdateClanProperty 'amount_of_gold', @gold_change, @clan_name;
+      UPDATE Clan
+      SET amount_of_gold = amount_of_gold + @gold_change
+        WHERE Clan.clan_name = @clan_name;
     END
     ELSE
       PRINT 'Amount of gold is not sufficient for making wood.'

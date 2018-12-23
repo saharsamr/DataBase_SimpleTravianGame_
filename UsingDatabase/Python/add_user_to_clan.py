@@ -1,8 +1,7 @@
-def add_user_to_clan(cnxn):
+def add_user_to_clan(doer, cnxn):
     username = raw_input('Enter target username:')
     role_name = raw_input('Enter target role name:')
     clan_name = raw_input('Enter clan name:')
-    doer = raw_input('Enter doer username:')
 
     cursor = cnxn.cursor()
 

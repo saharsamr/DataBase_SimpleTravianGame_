@@ -93,4 +93,9 @@ CREATE TABLE DoWar (
     )
 );
 
+CREATE TABLE LogedInUser (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    username VARCHAR(255) FOREIGN KEY REFERENCES UserData(username)
+);
+
 GO

@@ -1,7 +1,6 @@
-def start_war(cnxn):
+def start_war(doer, cnxn):
     starter = raw_input('Enter starter:')
     threatened = raw_input('Enter treathended:')
-    doer = raw_input('Enter doer username:')
 
     cursor = cnxn.cursor()
 

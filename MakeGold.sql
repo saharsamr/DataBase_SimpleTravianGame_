@@ -12,6 +12,8 @@ BEGIN
 
     SET @miner_duty_power = dbo.GetSensitiveDutyPower(@clan_name, 'Miner');
     SET @change = @miner_duty_power * 20;
-    EXEC dbo.UpdateClanProperty 'amount_of_gold', @change, @clan_name;
+    UPDATE Clan
+        SET amount_of_gold = amount_of_gold + @change
+          WHERE Clan.clan_name = @clan_name;
 END
 GO

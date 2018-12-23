@@ -14,6 +14,8 @@ BEGIN
     SET @farm_number = dbo.FindFarmsNumber(@clan_name);
     SET @Farmer_duty_power = dbo.GetSensitiveDutyPower(@clan_name, 'Farmer');
     SET @change = @Farmer_duty_power * @farm_number;
-    EXEC dbo.UpdateClanProperty 'amount_of_food', @change, @clan_name;
+    UPDATE Clan
+      SET amount_of_food = amount_of_food + @change
+        WHERE Clan.clan_name = @clan_name;
 END
 GO

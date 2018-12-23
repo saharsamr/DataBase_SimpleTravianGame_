@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE dbo.EatFood --TODO: man chon kolan ino nemifhamam mahsa bebine.
+CREATE PROCEDURE dbo.EatFood
 	@clan_name VARCHAR(255)
 AS
 BEGIN
@@ -12,8 +12,10 @@ BEGIN
             @random_percentage_of_wasted INT,
             @needed_food INT;
 
-    SET @amount_of_food = dbo.GetPropertyAmount(@clan_name, 'amount_of_food');
-    SET @solders_num = dbo.GetPropertyAmount(@clan_name, 'solders_num');
+    SELECT @amount_of_food = amount_of_food FROM Clan
+            WHERE Clan.clan_name = @clan_name;
+    SELECT @solders_num = solders_num FROM Clan
+              WHERE Clan.clan_name = @clan_name;
 
     SELECT @random_percentage_of_wasted = RAND()*(12-10)+10;
     SET @needed_food = (@solders_num * @random_percentage_of_wasted / 100);
