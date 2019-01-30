@@ -35,6 +35,14 @@ BEGIN
 			UPDATE Clan
 					SET default_type_building = @building_id
 					WHERE Clan.clan_name = @clan_name;
+			IF NOT EXISTS(SELECT * FROM BuildingsOfClans
+                    WHERE BuildingsOfClans.clan_name = @clan_name
+                      AND BuildingsOfClans.percentage_of_progress < 100
+                      AND BuildingsOfClans.building_id = @building_id)
+			BEGIN
+				INSERT INTO BuildingsOfClans(clan_name, building_id, percentage_of_progress)
+					VALUES(@clan_name, @building_id, 0);
+			END
 		ELSE
 			PRINT 'You do not have permission to change or set building type.'
 	END
